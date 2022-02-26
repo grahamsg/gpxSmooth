@@ -7,7 +7,7 @@ if (-not $outFile) {
 }
 
 $datetimeRegex = "(?<date>\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}Z)";
-$offsetRegex   = "(?<days>\d*?):?(?<hours>\d+):(?<minutes>\d+):(?<seconds>\d+)";
+$offsetRegex   = "(?<days>\d+):(?<hours>\d+):(?<minutes>\d+):(?<seconds>\d+)";
 Clear-Variable activityStartTime;
 
 $inRemove = "before"; # Status flag with values "before", "remove", and "after"
