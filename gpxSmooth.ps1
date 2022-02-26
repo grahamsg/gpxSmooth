@@ -30,7 +30,16 @@ Get-Content $inFile | ForEach-Object {
         $removeStartAbsolute = $activityStartTime.Add($removeStartOffset);
         $removeEndAbsolute   = $activityStartTime.Add($removeEndOffset);
 	}
+    
     switch ($inRemove) {
+        "after"  {
+            $curLine | Out-File -FilePath $outFile -Append;
+        }
+        "remove" {
+            if (($curLine -match $datetimeRegEx) -and (((Get-Date $matches['date']) -ge $removeEndAbsolute))) {
+                $inRemove = "after";
+            }
+        }
         "before" {
             if (($curLine -match $datetimeRegEx) -and (((Get-Date $matches['date']) -ge $removeStartAbsolute))) {
                 $inRemove = "remove";
@@ -39,14 +48,6 @@ Get-Content $inFile | ForEach-Object {
             else {
                 $curLine | Out-File -FilePath $outFile -Append;
             }
-        }
-        "remove" {
-            if (($curLine -match $datetimeRegEx) -and (((Get-Date $matches['date']) -ge $removeEndAbsolute))) {
-                $inRemove = "after";
-            }
-        }
-        "after"  {
-            $curLine | Out-File -FilePath $outFile -Append;
         }
     }
 }
